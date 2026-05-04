@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import ArchitectureDiagram from "./ArchitectureDiagram";
+import CapacityCalculator from "./CapacityCalculator";
 import mermaid from "mermaid";
 
 mermaid.initialize({ startOnLoad: false, theme: 'dark' });
@@ -344,7 +345,10 @@ export default function BuildMode({ onBack }) {
           {activeTab==="insights" && result && (
             <div style={{height:"100%",overflowY:"auto",padding:"2rem",background:"#fff"}}>
               <h2 style={{marginBottom:"1.5rem",fontSize:"1.2rem",fontWeight:700}}>Scaling & Tradeoffs</h2>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"1.25rem",marginBottom:"2rem"}}>
+              
+              <CapacityCalculator form={form} />
+
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"1.25rem",marginBottom:"2rem",marginTop:"2rem"}}>
                 {[{title:"Scaling",data:result.raw.insights.scaling},{title:"Reliability",data:result.raw.insights.reliability}].map(({title,data})=>(
                   <div key={title} style={{border:"1px solid #e5e7eb",borderRadius:12,padding:"1.25rem"}}>
                     <div style={{fontWeight:700,marginBottom:"0.75rem"}}>{title}</div>
@@ -360,6 +364,12 @@ export default function BuildMode({ onBack }) {
                   </div>
                 </div>
               </div>
+              {result.raw.dataModels?.mermaidERDiagram && (
+                <div style={{marginBottom:"2rem"}}>
+                  <h3 style={{marginBottom:"1rem",fontWeight:700}}>Database Schema</h3>
+                  <MermaidChart chart={result.raw.dataModels.mermaidERDiagram} />
+                </div>
+              )}
               <h3 style={{marginBottom:"1rem",fontWeight:700}}>Architectural Tradeoffs</h3>
               {result.raw.insights.tradeoffs.map((t,i)=>(
                 <div key={i} style={{border:"1px solid #e5e7eb",borderRadius:10,padding:"1rem 1.25rem",display:"flex",gap:"2rem",marginBottom:"0.75rem"}}>
