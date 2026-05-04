@@ -30,9 +30,23 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #000000;
+  background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #070710 70%);
   color: #ededed;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Outfit', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+  top: -200px;
+  right: -100px;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .landing-header {
@@ -60,12 +74,15 @@ body {
 }
 
 .hero-title {
-  font-size: 4.5rem;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
-  margin-bottom: 1.5rem;
-  color: #ffffff;
+  font-size: 5rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  background: linear-gradient(to bottom, #ffffff 0%, #9ca3af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 30px rgba(255,255,255,0.1));
 }
 
 .hero-subtitle {
@@ -88,22 +105,38 @@ body {
 
 .feature-card {
   flex: 1;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 32px;
   padding: 2.5rem 2rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
 }
 
 .feature-card:hover {
-  transform: translateY(-4px);
-  background: #1a1a1e;
-  border-color: #3f3f46;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  transform: translateY(-12px) scale(1.02);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+.feature-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.feature-card:hover::after {
+  opacity: 1;
 }
 
 .feature-card-header {
@@ -327,14 +360,22 @@ textarea.input-g { resize: vertical; min-height: 100px; line-height: 1.6; font-f
   align-items: center;
   gap: 1rem;
   flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.main-toolbar::-webkit-scrollbar {
+  display: none;
 }
 
 .toolbar-title {
   font-weight: 700;
   color: #ededed;
-  font-size: 0.95rem;
-  flex: 1;
-  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  margin-right: 1.5rem;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.2px;
 }
 
 .toolbar-tab {
@@ -541,4 +582,50 @@ textarea.input-g { resize: vertical; min-height: 100px; line-height: 1.6; font-f
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
+}
+
+/* Human Touch Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.feature-card {
+  animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+.feature-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+/* ─── MERMAID STYLING ─── */
+.mermaid-container svg {
+  height: auto !important;
+  display: block;
+}
+
+/* ─── EDITABLE INPUTS ─── */
+.editable-input {
+  padding: 12px 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: #000;
+  color: #fff !important;
+  font-size: 1.1rem;
+  font-family: 'JetBrains Mono', monospace;
+  outline: none;
+  transition: all 0.2s;
+  cursor: text;
+  border-radius: 0;
+}
+.editable-input:hover {
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.4);
+}
+.editable-input:focus {
+  background: rgba(255,255,255,0.05);
+  border-color: #fff;
+  box-shadow: 0 0 15px rgba(255,255,255,0.05);
+}
+.editable-input::-webkit-inner-spin-button,
+.editable-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

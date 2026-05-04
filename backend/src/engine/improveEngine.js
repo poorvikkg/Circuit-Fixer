@@ -167,83 +167,132 @@ function analyzeArchitecture(input) {
 }
 
 function generateImprovedArchitecture(input, analysis) {
-  // Build a highly detailed, enterprise-grade target architecture
   const nodes = [];
   const edges = [];
 
   const desc = (input.existingHLD || "").toLowerCase();
   const pain = (input.improvementsWanted || "").toLowerCase();
   const scale = input.currentScale || "medium";
-  const features = input.features || [];
+  const stack = (input.techStack || "").toLowerCase();
+  const combinedText = `${desc} ${pain} ${stack}`;
 
-  // Edge Layer
-  nodes.push({ id: "client", label: "Client Applications (Web/Mobile)", layer: "client" });
-  nodes.push({ id: "cdn", label: "Global CDN (Cloudflare/CloudFront)", layer: "edge" });
-  nodes.push({ id: "waf", label: "WAF & Shield", layer: "edge" });
-  nodes.push({ id: "route53", label: "Global DNS (Route53)", layer: "edge" });
+  // Helper to check if any keyword exists
+  const has = (...words) => words.some(w => combinedText.includes(w));
 
-  // Traffic / Gateway Layer
-  nodes.push({ id: "alb", label: "Application Load Balancer", layer: "traffic" });
-  nodes.push({ id: "api_gateway", label: "API Gateway (Rate Limiting/Auth)", layer: "traffic" });
+  // 1. Edge Layer (Always present for scale, but tailored)
+  nodes.push({ id: "client", label: "Client Applications", layer: "client" });
+  nodes.push({ id: "dns_route53", label: has("aws") ? "Route 53 (DNS)" : "Cloud DNS", layer: "edge" });
+  nodes.push({ id: "cdn_cloudfront", label: has("cloudflare") ? "Cloudflare CDN" : (has("aws") ? "CloudFront CDN" : "Global CDN"), layer: "edge" });
+  nodes.push({ id: "waf_security_layer", label: "WAF & DDoS Protection", layer: "edge" });
 
-  // Service Layer (Microservices)
-  nodes.push({ id: "auth_svc", label: "Identity & Auth Service (OIDC)", layer: "service" });
-  nodes.push({ id: "core_svc", label: "Core Business Service (K8s Pods)", layer: "service" });
+  // 2. Gateway Layer
+  const lbLabel = has("kubernetes", "k8s") ? "Ingress Controller" : "Application Load Balancer";
+  nodes.push({ id: "load_balancer", label: lbLabel, layer: "traffic" });
   
-  if (desc.includes("feed") || pain.includes("feed") || features.includes("feed")) {
-    nodes.push({ id: "feed_svc", label: "Feed Generation Service (CQRS)", layer: "service" });
-  }
-  if (desc.includes("chat") || pain.includes("chat") || features.includes("chat")) {
-    nodes.push({ id: "chat_svc", label: "Real-time Chat Service (WebSockets)", layer: "service" });
-  }
-  nodes.push({ id: "notify_svc", label: "Push Notification Service", layer: "service" });
-  nodes.push({ id: "search_svc", label: "Search Service (Elasticsearch)", layer: "service" });
-
-  // Data / State Layer
-  nodes.push({ id: "cache_cluster", label: "Redis Cluster (LRU/Session/PubSub)", layer: "data" });
-  nodes.push({ id: "db_primary", label: "Primary DB (Write-Heavy)", layer: "data" });
-  nodes.push({ id: "db_replica", label: "Read Replicas (Auto-scaling)", layer: "data" });
-  nodes.push({ id: "object_store", label: "Object Storage (S3)", layer: "data" });
-
-  // Async / Background Layer
-  nodes.push({ id: "event_bus", label: "Event Bus / Kafka Cluster", layer: "async" });
-  nodes.push({ id: "worker_nodes", label: "Background Worker Nodes", layer: "async" });
-  nodes.push({ id: "data_warehouse", label: "Data Warehouse (Snowflake/BigQuery)", layer: "async" });
-
-  // Observability
-  nodes.push({ id: "observability", label: "Observability (Datadog/Prometheus)", layer: "async" });
-
-  // Connect Edge
-  edges.push(["client", "route53"], ["route53", "cdn"], ["cdn", "waf"], ["waf", "alb"], ["alb", "api_gateway"]);
-
-  // Connect Gateway to Services
-  edges.push(["api_gateway", "auth_svc"], ["api_gateway", "core_svc"]);
-  if (nodes.find(n => n.id === "feed_svc")) edges.push(["api_gateway", "feed_svc"]);
-  if (nodes.find(n => n.id === "chat_svc")) edges.push(["api_gateway", "chat_svc"]);
-  edges.push(["api_gateway", "search_svc"]);
-
-  // Connect Services to Data / Cache
-  edges.push(["auth_svc", "db_primary"], ["auth_svc", "cache_cluster"]);
-  edges.push(["core_svc", "db_primary"], ["core_svc", "db_replica"], ["core_svc", "cache_cluster"]);
-  edges.push(["core_svc", "object_store"]);
-
-  if (nodes.find(n => n.id === "feed_svc")) {
-    edges.push(["feed_svc", "db_replica"], ["feed_svc", "cache_cluster"]);
-  }
-  if (nodes.find(n => n.id === "chat_svc")) {
-    edges.push(["chat_svc", "cache_cluster"], ["chat_svc", "event_bus"]);
+  if (has("graphql")) {
+    nodes.push({ id: "Apollo_Federation_Gateway", label: "GraphQL Federation Gateway", layer: "traffic" });
+  } else if (has("grpc")) {
+    nodes.push({ id: "gRPC_API_Gateway", label: "gRPC API Gateway", layer: "traffic" });
+  } else {
+    nodes.push({ id: "REST_API_Gateway", label: "API Gateway (Rate Limiter)", layer: "traffic" });
   }
 
-  // Connect Search
-  edges.push(["search_svc", "db_replica"]);
+  // 3. Core Services Layer (Dynamic)
+  const computeLabel = has("kubernetes", "k8s") ? "(K8s Pods)" : (has("serverless", "lambda") ? "(Lambdas)" : "(Microservices)");
+  
+  nodes.push({ id: "auth_service", label: `Identity & Auth ${computeLabel}`, layer: "service" });
+  nodes.push({ id: "core_service", label: `Core Business Service ${computeLabel}`, layer: "service" });
+
+  // Feature-based services
+  if (has("feed", "timeline")) {
+    nodes.push({ id: "feed_service", label: "Feed Generation Service", layer: "service" });
+  }
+  if (has("chat", "message", "realtime", "websocket")) {
+    nodes.push({ id: "chat_service", label: "Real-time Chat Service", layer: "service" });
+  }
+  if (has("notification", "push", "email")) {
+    nodes.push({ id: "notification_service", label: "Notification Service", layer: "service" });
+  }
+  if (has("search", "elastic")) {
+    nodes.push({ id: "search_service", label: "Search Engine (Elasticsearch)", layer: "service" });
+  }
+  if (has("payment", "billing", "stripe")) {
+    nodes.push({ id: "payment_service", label: "Payment & Billing Service", layer: "service" });
+  }
+  if (has("video", "media", "transcode", "upload")) {
+    nodes.push({ id: "media_service", label: "Media Processing Service", layer: "service" });
+  }
+  if (has("ai", "ml", "recommendation", "model")) {
+    nodes.push({ id: "ai_service", label: "AI Inference & Recommendation", layer: "service" });
+  }
+
+  // 4. Data Layer (Tailored to stack)
+  const isNoSQL = has("mongodb", "dynamodb", "cassandra", "nosql");
+  const dbLabel = has("postgres") ? "PostgreSQL Cluster" : (has("mysql") ? "MySQL Cluster" : (isNoSQL ? "NoSQL Database" : "Primary Database"));
+  
+  nodes.push({ id: "SQL_DB", label: dbLabel, layer: "data" });
+  
+  // High scale requires replicas
+  if (scale === "large" || scale === "medium" || has("scale", "replica", "read heavy")) {
+    nodes.push({ id: "read_replica", label: `${dbLabel} (Read Replicas)`, layer: "data" });
+  }
+  
+  nodes.push({ id: "cache", label: has("redis") ? "Redis ElastiCache" : "Distributed Cache", layer: "cache" });
+  
+  if (has("media", "upload", "s3", "file", "image", "video")) {
+    nodes.push({ id: "blob_storage_s3", label: has("aws") ? "Amazon S3 Storage" : "Object Storage", layer: "data" });
+  }
+
+  // 5. Async / Event Layer
+  const queueLabel = has("kafka") ? "Kafka Event Stream" : (has("rabbitmq") ? "RabbitMQ" : (has("sqs") ? "Amazon SQS" : "Message Queue"));
+  nodes.push({ id: "message_queue", label: queueLabel, layer: "async" });
+  nodes.push({ id: "worker_services", label: "Background Workers", layer: "async" });
+
+  if (has("analytics", "data warehouse", "snowflake", "bigquery", "redshift")) {
+    nodes.push({ id: "data_warehouse", label: "Data Warehouse", layer: "async" });
+  }
+
+  // ── Build Edges ──
+  const gwId = has("graphql") ? "Apollo_Federation_Gateway" : (has("grpc") ? "gRPC_API_Gateway" : "REST_API_Gateway");
+
+  edges.push(["client", "dns_route53"], ["dns_route53", "cdn_cloudfront"], ["cdn_cloudfront", "waf_security_layer"], ["waf_security_layer", "load_balancer"], ["load_balancer", gwId]);
+
+  // Gateway -> Services
+  edges.push([gwId, "auth_service"], [gwId, "core_service"]);
+  
+  const serviceIds = ["feed", "chat", "notification", "search", "payment", "media", "ai"].map(s => s + "_service").filter(id => nodes.find(n => n.id === id));
+  serviceIds.forEach(id => edges.push([gwId, id]));
+
+  // Services -> Data
+  edges.push(["auth_service", "SQL_DB"], ["auth_service", "cache"]);
+  edges.push(["core_service", "SQL_DB"], ["core_service", "cache"]);
+  if (nodes.find(n => n.id === "read_replica")) {
+    edges.push(["core_service", "read_replica"]);
+  }
+
+  // Specific service data bindings
+  if (nodes.find(n => n.id === "search_service") && nodes.find(n => n.id === "read_replica")) {
+    edges.push(["read_replica", "search_service"]); // CDC sync
+  }
+  if (nodes.find(n => n.id === "media_service")) {
+    edges.push(["media_service", "blob_storage_s3"]);
+  }
+  if (nodes.find(n => n.id === "feed_service")) {
+    edges.push(["feed_service", "cache"]);
+    if (nodes.find(n => n.id === "read_replica")) edges.push(["feed_service", "read_replica"]);
+  }
 
   // Async flows
-  edges.push(["core_svc", "event_bus"], ["event_bus", "worker_nodes"], ["worker_nodes", "db_primary"]);
-  edges.push(["event_bus", "notify_svc"]);
-  edges.push(["db_replica", "data_warehouse"]); // CDC or batch sync
-
-  // Observability touches everything (simplified here to just point from Gateway and Core)
-  edges.push(["api_gateway", "observability"], ["core_svc", "observability"]);
+  edges.push(["core_service", "message_queue"], ["message_queue", "worker_services"]);
+  if (nodes.find(n => n.id === "notification_service")) {
+    edges.push(["message_queue", "notification_service"]);
+  }
+  if (nodes.find(n => n.id === "media_service")) {
+    edges.push(["media_service", "message_queue"]); // async transcode
+  }
+  if (nodes.find(n => n.id === "data_warehouse") && nodes.find(n => n.id === "read_replica")) {
+    edges.push(["read_replica", "data_warehouse"]);
+  }
 
   return { nodes, edges };
 }
