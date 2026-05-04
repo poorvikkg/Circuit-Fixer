@@ -19,4 +19,3 @@ Fixy provides a platform that:
 * analyzes existing systems and codebases
 * suggests improvements for scalability, performance, and structure
 * helps evolve systems from initial design to production-level architecture
-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NNNkkjk
