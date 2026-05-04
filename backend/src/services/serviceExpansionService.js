@@ -476,7 +476,7 @@ function expandService(serviceName, decisions, featureFlags) {
     TokenFactoryStage *-- TokenSigner
     AuthController *-- SessionRegistry
     AuthController *-- AuditLogger`;
-    lld.designPatterns.push(...getAppTypePatterns(serviceName, f));
+    lld.designPatterns.push(...getAppTypePatterns(serviceName, featureFlags));
     return lld;
   }
 
@@ -493,7 +493,7 @@ function expandService(serviceName, decisions, featureFlags) {
       "Fan-out on Read → for celebrities >10K followers (pull model)",
       "Hybrid Router — evaluates follower count at publish time",
       "Redis Pipeline (batch LPUSH across follower feeds, 0-499 cap)",
-      f.isCqrs ? "Command: PublishPostCommand | Query: GetFeedQuery (CQRS split)" : "Unified FeedService handler"
+      featureFlags.Cqrs ? "Command: PublishPostCommand | Query: GetFeedQuery (CQRS split)" : "Unified FeedService handler"
     ];
 
     lld.layers["Ranking Engine"] = [
@@ -516,7 +516,7 @@ function expandService(serviceName, decisions, featureFlags) {
       "PostRepository → PostgreSQL (write) + Read Replica (read)",
       "FollowGraphRepository → separate graph DB or adjacency list",
       "LikeCountRepository → Redis INCR (eventually consistent sync to DB)",
-      f.isEventSourced ? "EventStore: PostPublished, PostLiked, PostDeleted" : "CRUD model with soft delete"
+      featureFlags.EventSourced ? "EventStore: PostPublished, PostLiked, PostDeleted" : "CRUD model with soft delete"
     ];
 
     lld.layers["Async Processing"] = hasKafka ? [
@@ -597,7 +597,7 @@ function expandService(serviceName, decisions, featureFlags) {
     FanOutStrategy <|.. PullFanOut
     FeedRanker *-- EngagementScorer
     FeedService --> Post`;
-    lld.designPatterns.push(...getAppTypePatterns(serviceName, f));
+    lld.designPatterns.push(...getAppTypePatterns(serviceName, featureFlags));
     return lld;
   }
 
@@ -712,7 +712,7 @@ function expandService(serviceName, decisions, featureFlags) {
     ChatGateway --> MessageRepository : persists
     ChatMessage --> MessageType
     ChatMessage --> MessageStatus`;
-    lld.designPatterns.push(...getAppTypePatterns(serviceName, f));
+    lld.designPatterns.push(...getAppTypePatterns(serviceName, featureFlags));
     return lld;
   }
 
@@ -753,7 +753,7 @@ function expandService(serviceName, decisions, featureFlags) {
     lld.layers["Security"] = [
       "Pre-signed URL scoped to exact file key (no wildcard)",
       "Content-Type enforcement on upload (reject mismatched MIME)",
-      f.requiresCompliance ? "KMS encryption at rest (SSE-KMS)" : "SSE-S3 encryption at rest",
+      featureFlags.Compliance ? "KMS encryption at rest (SSE-KMS)" : "SSE-S3 encryption at rest",
       "Max file size enforcement (server-side validation before URL generation)"
     ];
 
@@ -826,7 +826,7 @@ function expandService(serviceName, decisions, featureFlags) {
     MediaProcessorQueue --> ProcessingJob
     ProcessingJob --> MediaType
     MediaController --> FileMetadata`;
-    lld.designPatterns.push(...getAppTypePatterns(serviceName, f));
+    lld.designPatterns.push(...getAppTypePatterns(serviceName, featureFlags));
     return lld;
   }
 
@@ -858,7 +858,7 @@ function expandService(serviceName, decisions, featureFlags) {
       "Push: Firebase Cloud Messaging (FCM) for Android + APNs for iOS",
       "Email: AWS SES / SendGrid (templated, tracked)",
       "In-App: Redis Pub/Sub → WebSocket delivery to online users",
-      f.requiresCompliance ? "SMS: Twilio with audit log of all messages" : "SMS: Twilio (optional)"
+      featureFlags.Compliance ? "SMS: Twilio with audit log of all messages" : "SMS: Twilio (optional)"
     ];
 
     lld.layers["Retry & Reliability"] = [
@@ -936,7 +936,7 @@ function expandService(serviceName, decisions, featureFlags) {
     DeliveryAdapter <|.. SESAdapter
     DeliveryRouter *-- RetryPolicy
     PreferenceEngine --> Channel`;
-    lld.designPatterns.push(...getAppTypePatterns(serviceName, f));
+    lld.designPatterns.push(...getAppTypePatterns(serviceName, featureFlags));
     return lld;
   }
 
@@ -957,7 +957,7 @@ function expandService(serviceName, decisions, featureFlags) {
 
     lld.layers["Follow Graph"] = [
       "Adjacency list model (follows table: follower_id, followee_id)",
-      f.isLargeScale ? "Graph DB (Neo4j) for deep relationship queries" : "SQL adjacency list",
+      featureFlags.LargeScale ? "Graph DB (Neo4j) for deep relationship queries" : "SQL adjacency list",
       "Follower/Following count: Redis INCR (eventually synced to DB)",
       "Mutual follow detection (friendship state)",
       "Block list management"
@@ -973,7 +973,7 @@ function expandService(serviceName, decisions, featureFlags) {
       "Repository Pattern — Decouple data access from domain logic",
       "Cache-Aside — Profile fetched from Redis, DB fallback",
       "CQRS Light — Separate read (profile view) from write (update) models",
-      f.isLargeScale ? "Graph Database Pattern — Neo4j for social graph traversal" : "Adjacency List Pattern — SQL follow graph"
+      featureFlags.LargeScale ? "Graph Database Pattern — Neo4j for social graph traversal" : "Adjacency List Pattern — SQL follow graph"
     ];
 
     lld.classDiagram = `classDiagram
@@ -1017,7 +1017,7 @@ function expandService(serviceName, decisions, featureFlags) {
     UserService --> UserProfile
     UserService *-- FollowGraphRepository
     UserProfile --> ProfileVisibility`;
-    lld.designPatterns.push(...getAppTypePatterns(serviceName, f));
+    lld.designPatterns.push(...getAppTypePatterns(serviceName, featureFlags));
     return lld;
   }
 
@@ -1088,7 +1088,7 @@ function expandService(serviceName, decisions, featureFlags) {
     SearchEngine *-- QueryBuilder
     SearchEngine *-- ResultRanker
     IndexingWorker --> SearchEngine : feeds`;
-    lld.designPatterns.push(...getAppTypePatterns(serviceName, f));
+    lld.designPatterns.push(...getAppTypePatterns(serviceName, featureFlags));
     return lld;
   }
 

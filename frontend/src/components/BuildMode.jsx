@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ArchitectureDiagram from "./ArchitectureDiagram";
 import CapacityCalculator from "./CapacityCalculator";
 import mermaid from "mermaid";
