@@ -71,26 +71,28 @@ async function crawlRepo(owner, repo, token, maxFiles = 40) {
     throw new Error(tree.message || "Could not fetch repo tree. Make sure the repo is public.");
   }
 
+  const fetchFile = async (item) => {
+    try {
+      const fileData = await githubGet(`/repos/${owner}/${repo}/contents/${item.path}`, token);
+      if (fileData.encoding === "base64" && fileData.content) {
+        return {
+          path: item.path,
+          language: getLanguage(item.path),
+          content: decodeContent(fileData.content),
+          size: item.size
+        };
+      }
+    } catch (e) {
+      return null;
+    }
+  };
+
   const codeFiles = tree.tree
     .filter(item => item.type === "blob" && getLanguage(item.path))
     .slice(0, maxFiles);
 
-  for (const item of codeFiles) {
-    try {
-      const fileData = await githubGet(`/repos/${owner}/${repo}/contents/${item.path}`, token);
-      if (fileData.encoding === "base64" && fileData.content) {
-        const content = decodeContent(fileData.content);
-        files.push({
-          path: item.path,
-          language: getLanguage(item.path),
-          content,
-          size: item.size
-        });
-      }
-    } catch (e) {
-      // Skip files that can't be fetched
-    }
-  }
+  const results = await Promise.all(codeFiles.map(fetchFile));
+  files.push(...results.filter(Boolean));
 
   return files;
 }

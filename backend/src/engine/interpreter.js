@@ -1,9 +1,12 @@
+const STARTUP_USER_THRESHOLD = 10000;
+const ENTERPRISE_USER_THRESHOLD = 1000000;
+
 function interpret(input) {
   const flags = {
     // scale
-    isSmallScale: input.users < 10000,
-    isMediumScale: input.users >= 10000 && input.users < 1000000,
-    isLargeScale: input.users >= 1000000,
+    isSmallScale: input.users < STARTUP_USER_THRESHOLD,
+    isMediumScale: input.users >= STARTUP_USER_THRESHOLD && input.users < ENTERPRISE_USER_THRESHOLD,
+    isLargeScale: input.users >= ENTERPRISE_USER_THRESHOLD,
 
     // domain
     appType: input.appType,  // 'social', 'fintech', 'healthcare', 'ecommerce', 'gaming', 'saas', 'streaming'

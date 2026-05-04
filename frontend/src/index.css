@@ -506,6 +506,8 @@ textarea.input-g { resize: vertical; min-height: 100px; line-height: 1.6; font-f
   .canvas-area > div {
     background: #fff !important;
     color: #000 !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
   /* Avoid breaking inside cards */
