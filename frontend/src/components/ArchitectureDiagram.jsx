@@ -5,7 +5,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 
-// ── EXPANSIVE CONSTANTS ───────────────────────────────────────
+// Constants
 const NODE_W     = 280;   
 const NODE_H     = 95;    
 const COL_GAP    = 380;   // Even wider
@@ -140,7 +140,7 @@ const ArchNode = ({ data, selected }) => {
         {cfg.badge}
       </div>
 
-      {/* MULTIPLE HANDLES TO PREVENT OVERLAP */}
+      {/* Node handles */}
       <Handle id="t1" type="target" position={Position.Top} style={{ background: cfg.glow, width: 6, height: 6, border: "2px solid #000", left: "25%" }} />
       <Handle id="t" type="target" position={Position.Top} style={{ background: cfg.glow, width: 8, height: 8, border: "2px solid #000" }} />
       <Handle id="t2" type="target" position={Position.Top} style={{ background: cfg.glow, width: 6, height: 6, border: "2px solid #000", left: "75%" }} />

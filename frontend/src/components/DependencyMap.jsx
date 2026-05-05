@@ -5,7 +5,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 
-// ── CONSTANTS ───────────────────────────────────────────────
+// Constants
 const NODE_W     = 220;   
 const NODE_H     = 70;    
 const COL_GAP    = 100;   
@@ -136,8 +136,7 @@ const DependencyNode = ({ data, selected }) => {
         {cfg.badge}
       </div>
 
-      {/* Multiple handles to distribute edges */}
-      {/* Multiple handles to distribute edges - hidden to avoid visual glitch */}
+      {/* Node handles */}
       <Handle type="target" position={Position.Top} id="t1" style={{ left: "25%", opacity: 0 }} />
       <Handle type="target" position={Position.Top} id="t"  style={{ left: "50%", opacity: 0 }} />
       <Handle type="target" position={Position.Top} id="t2" style={{ left: "75%", opacity: 0 }} />

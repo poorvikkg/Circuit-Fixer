@@ -40,7 +40,7 @@ export default function AuthPage({ onAuthenticated }) {
       <div style={styles.grid} />
 
       <div id="fixy-auth-card" style={styles.card}>
-        {/* Brand - Minimalist */}
+        {/* Brand Header */}
         <div style={styles.logoRow}>
           <span id="fixy-auth-logo" style={styles.logoText}>CIRCUIT FIXER</span>
         </div>
@@ -109,7 +109,7 @@ export default function AuthPage({ onAuthenticated }) {
             </div>
           </div>
 
-          {/* Error message - more subtle/professional */}
+          {/* Error handling */}
           {error && (
             <div style={styles.errorBox}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fca5a5" strokeWidth="2" strokeLinecap="round">
@@ -121,7 +121,7 @@ export default function AuthPage({ onAuthenticated }) {
             </div>
           )}
 
-          {/* Submit - Pure White for Premium Look */}
+          {/* Submit button */}
           <button
             id="fixy-auth-submit"
             type="submit"
@@ -180,7 +180,7 @@ export default function AuthPage({ onAuthenticated }) {
 const styles = {
   root: {
     minHeight: "100vh",
-    background: "#09090b", // Pure dark zinc
+    background: "#09090b", // Dark theme
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -191,7 +191,7 @@ const styles = {
   grid: {
     position: "absolute",
     inset: 0,
-    backgroundImage: "radial-gradient(circle, #ffffff05 1px, transparent 1px)", // Very faint grid
+    backgroundImage: "radial-gradient(circle, #ffffff05 1px, transparent 1px)", // Subtle grid
     backgroundSize: "40px 40px",
     pointerEvents: "none",
   },
@@ -302,12 +302,12 @@ const styles = {
     gap: 8,
     marginTop: 8,
     padding: "14px 24px",
-    background: "#ffffff", // Pure white
+    background: "#ffffff", // White button
     border: "none",
     borderRadius: 8,
     fontSize: 14,
     fontWeight: 600,
-    color: "#000000", // Black text on white
+    color: "#000000", // Dark text
     fontFamily: "'Inter', sans-serif",
     transition: "all 0.2s ease",
     width: "100%",

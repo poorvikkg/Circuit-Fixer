@@ -261,7 +261,7 @@ export default function BuildMode({ onBack }) {
               <div className="toolbar-title">{form.appType} · {Number(form.users).toLocaleString()} DAU</div>
               {["hld", "lld", "insights", "iac"].map(t => (
                 <button key={t} className={`toolbar-tab ${activeTab === t ? "active" : ""}`} onClick={() => setActiveTab(t)}>
-                  {t === "hld" ? "System Diagram" : t === "lld" ? "Component Details" : t === "insights" ? "Scaling & Tradeoffs" : "Setup Scripts"}
+                  {t === "hld" ? "System" : t === "lld" ? "Components" : t === "insights" ? "Scaling" : "Scripts"}
                 </button>
               ))}
               <div style={{ flex: 1 }}></div>

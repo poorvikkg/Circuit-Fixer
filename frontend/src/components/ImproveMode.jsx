@@ -10,7 +10,7 @@ export default function ImproveMode({ onBack }) {
   const [loading, setLoading] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  // HLD state
+  /* HLD state */
   const [hldResult, _setHldResult] = useState(null);
   const mapRef = useRef(null);
   const [isMapFullscreen, setIsMapFullscreen] = useState(false);
@@ -36,13 +36,13 @@ export default function ImproveMode({ onBack }) {
     currentScale: "medium"
   });
 
-  // LLD / Code Review state
+  /* Code Review state */
   const [repoUrl, setRepoUrl] = useState("");
   const [githubToken, setGithubToken] = useState("");
   const [codeResult, setCodeResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // ── Code Review ──
+  /* Code Review */
   const handleCodeReview = async () => {
     if (!repoUrl) return;
     setLoading(true); setCodeResult(null); setErrorMessage("");
@@ -80,7 +80,7 @@ export default function ImproveMode({ onBack }) {
 
   return (
     <div className="app" style={{ background: "#000", position: "relative" }}>
-      {/* ─── SIDEBAR ─── */}
+      {/* Sidebar */}
       <div className="sidebar" style={{ 
         width: isSidebarCollapsed ? "0px" : "360px", 
         minWidth: isSidebarCollapsed ? "0px" : "360px",
@@ -116,7 +116,7 @@ export default function ImproveMode({ onBack }) {
           </div>
           <div className="sidebar-body" style={{background: "var(--bg-panel)"}}>
 
-          {/* ═══ HLD Section ═══ */}
+          {/* HLD Section */}
           {section === "hld" && (
             <div style={{ 
               height: "100%", display: "flex", alignItems: "center", justifyContent: "center", 
@@ -133,7 +133,7 @@ export default function ImproveMode({ onBack }) {
           )}
 
 
-          {/* ═══ LLD / Code Review Section ═══ */}
+          {/* LLD Section */}
           {section === "lld" && (<>
             <div className="section-label" style={{marginTop:"0.25rem"}}>GitHub Review</div>
 
@@ -202,7 +202,7 @@ export default function ImproveMode({ onBack }) {
       </div>
     </div>
 
-      {/* ── MAIN PANEL ── */}
+      {/* Main Panel */}
       <div className="main">
         {/* Toolbar */}
         <div className="main-toolbar">
@@ -263,7 +263,7 @@ export default function ImproveMode({ onBack }) {
             </div>
           )}
 
-          {/* ═══ HLD TABS ═══ */}
+          {/* HLD Tabs */}
           {hldResult && activeTab==="issues" && (
             <div style={{height:"100%",overflowY:"auto",padding:"2rem",background:"#000"}}>
               <table style={{width:"100%", borderCollapse:"collapse", color:"#fff"}}>
@@ -330,7 +330,7 @@ export default function ImproveMode({ onBack }) {
             </div>
           )}
 
-          {/* ═══ CODE REVIEW TABS ═══ */}
+          {/* Code Review Tabs */}
           {codeResult && activeTab==="security" && (
             <div style={{height:"100%",overflowY:"auto",padding:"2rem",background:"#000"}}>
               <table style={{width:"100%", borderCollapse:"collapse", color:"#fff"}}>

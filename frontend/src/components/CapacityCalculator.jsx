@@ -38,7 +38,7 @@ export default function CapacityCalculator({ form }) {
 
   return (
     <div style={{ marginTop: "2rem" }}>
-      {/* MONOCHROME ASSUMPTIONS PANEL */}
+      {/* Assumptions Panel */}
       <div style={{ background: "#050505", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 0, padding: "1.5rem", marginBottom: "2rem" }}>
         <h4 style={{ marginBottom: "1.5rem", color: "#fff", fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1.5px" }}>Assumptions Override</h4>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.5rem" }}>
@@ -65,7 +65,7 @@ export default function CapacityCalculator({ form }) {
         </div>
       </div>
 
-      {/* MONOCHROME GRID */}
+      {/* Results Grid */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1px", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)" }}>
 
         <div style={{ background: "#000", padding: "1.5rem" }}>
