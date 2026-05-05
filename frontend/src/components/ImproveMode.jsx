@@ -11,7 +11,7 @@ export default function ImproveMode({ onBack }) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // HLD state
-  const [hldResult, setHldResult] = useState(null);
+  const [hldResult, setHldResult] = useState(null); // eslint-disable-line no-unused-vars
   const mapRef = useRef(null);
   const [isMapFullscreen, setIsMapFullscreen] = useState(false);
 
