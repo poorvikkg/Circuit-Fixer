@@ -1,52 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import ArchitectureDiagram from "./ArchitectureDiagram";
-import mermaid from "mermaid";
-
-mermaid.initialize({ startOnLoad: false, theme: 'dark' });
-
-const MermaidChart = ({ chart }) => {
-  const [svgContent, setSvgContent] = useState("");
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (chart) {
-      mermaid.render(`mermaid-${Math.random().toString(36).substr(2, 9)}`, chart)
-        .then(({ svg }) => {
-          setSvgContent(svg);
-          setError("");
-        }).catch(e => {
-          setError(e.message);
-        });
-    }
-  }, [chart]);
-
-  if (error) return <div style={{ color:"red", fontSize:"0.8rem", background:"#111827", padding:"1rem", borderRadius:"8px" }}>{error}</div>;
-
-  return (
-    <div 
-      className="mermaid-container" 
-      style={{ 
-        background:"#000", padding:"1rem", borderRadius:0, 
-        border: "none", overflow:"auto",
-        width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"
-      }}
-    >
-      <div 
-        style={{ 
-          transform: "scale(2.2)", 
-          transformOrigin: "center center",
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          transition: "transform 0.3s ease"
-        }}
-        dangerouslySetInnerHTML={{ __html: svgContent }} 
-      />
-    </div>
-  );
-};
+import DependencyMap from "./DependencyMap";
 
 const SEV_COLOR = { critical:"#ef4444", high:"#f59e0b", medium:"#3b82f6", info:"#10b981" };
 
@@ -59,6 +13,22 @@ export default function ImproveMode({ onBack }) {
   // HLD state
   const [hldFile, setHldFile] = useState(null);
   const [hldResult, setHldResult] = useState(null);
+  const mapRef = useRef(null);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFs = () => setIsMapFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handleFs);
+    return () => document.removeEventListener("fullscreenchange", handleFs);
+  }, []);
+
+  const toggleMapFullscreen = () => {
+    if (!document.fullscreenElement) {
+      mapRef.current?.requestFullscreen().catch(e => console.error(e));
+    } else {
+      document.exitFullscreen();
+    }
+  };
   const [hldErrorMessage, setHldErrorMessage] = useState("");
   const [hldForm, setHldForm] = useState({
     existingHLD: "",
@@ -617,21 +587,34 @@ export default function ImproveMode({ onBack }) {
           )}
 
           {codeResult && activeTab==="archMap" && (
-            <div style={{height:"100%",position:"relative", background:"#000"}}>
-              <div style={{position:"absolute",top:16,left:"50%",transform:"translateX(-50%)",zIndex:10,background:"#000",color:"#fff",padding:"8px 24px",borderRadius:4,border:"1px solid rgba(255,255,255,0.2)",fontSize:"0.7rem",fontWeight:800,textTransform:"uppercase",letterSpacing:"1px"}}>
-                Module Dependency Map
-              </div>
-              {review.mermaidGraph ? (
-                <div style={{width:"100%", height:"100%", padding:"1rem"}}>
-                   <MermaidChart chart={review.mermaidGraph} />
-                </div>
+            <div ref={mapRef} style={{height:"100%", minHeight: "600px", position:"relative", background:"#070710"}}>
+              <button 
+                onClick={toggleMapFullscreen}
+                style={{
+                  position: "absolute", top: 16, right: 16, zIndex: 100,
+                  background: "rgba(0,0,0,0.8)", border: "1px solid rgba(255,255,255,0.2)",
+                  borderRadius: 0, padding: "8px 16px", color: "#fff",
+                  cursor: "pointer", display: "flex", alignItems: "center", gap: 10,
+                  fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px",
+                  fontFamily: "'JetBrains Mono', monospace", backdropFilter: "blur(4px)"
+                }}
+              >
+                {isMapFullscreen ? (
+                  <><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg> EXIT FOCUS</>
+                ) : (
+                  <><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg> ENTER FOCUS</>
+                )}
+              </button>
+              
+              {(review.dependencyData?.nodes?.length > 0) ? (
+                <DependencyMap dependencyData={review.dependencyData} />
               ) : (
-                <div style={{display:"flex",height:"100%",alignItems:"center",justifyContent:"center",color:"#6b7280",flexDirection:"column"}}>
-                  <div style={{marginBottom:"1rem"}}>
+                <div style={{display:"flex",height:"100%",alignItems:"center",justifyContent:"center",color:"#6b7280",flexDirection:"column", background: "#000"}}>
+                  <div style={{marginBottom:"1rem", opacity: 0.5}}>
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                   </div>
-                  <div>No internal dependencies found to map.</div>
-                  <div style={{fontSize:"0.8rem",marginTop:"0.5rem"}}>This typically happens if files don't import each other or use unrecognized import paths.</div>
+                  <div style={{fontWeight: 800, color: "#fff", letterSpacing: "1px", textTransform: "uppercase", fontSize: "0.75rem"}}>No dependencies detected</div>
+                  <div style={{fontSize:"0.75rem",marginTop:"0.5rem", maxWidth: "300px", textAlign: "center", lineHeight: 1.5}}>Internal module relationships could not be mapped for this repository scope.</div>
                 </div>
               )}
             </div>

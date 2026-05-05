@@ -309,48 +309,102 @@ function detectIssues(files) {
   const overallHealth = calculateHealthScore(issues, security, fileMetrics);
 
   // ── Generate Repository Architecture Map (Mermaid) ──
-  let mermaidGraph = "graph TD\n";
+  let mermaidGraph = "flowchart TD\n";
   const addedNodes = new Set();
-  const edges = new Set();
+  const edges = new Map(); // edgeId -> {from, to}
+  const groups = {}; // dir -> [nodes]
   
   for (const [file, imports] of Object.entries(importMap)) {
-    const fromName = file.split('/').pop().replace(/[^a-zA-Z0-9]/g, '_');
-    const fromDisplay = file.split('/').pop();
+    const parts = file.split('/');
+    const dir = parts.length > 1 ? parts[parts.length - 2] : "root";
+    const name = file.split('/').pop().replace(/[^a-zA-Z0-9]/g, '_');
+    const display = file.split('/').pop();
     
-    if (imports.length > 0) {
-      if (!addedNodes.has(fromName)) {
-        mermaidGraph += `  ${fromName}["📄 ${fromDisplay}"]\n`;
-        addedNodes.add(fromName);
-      }
-      
-      for (const imp of imports) {
-        if (imp.startsWith(".")) {
-           const resolved = allPaths.find(p => p.includes(imp.replace(/^\.\//, "").replace(/\.\w+$/, "")));
-           if (resolved) {
-             const toName = resolved.split('/').pop().replace(/[^a-zA-Z0-9]/g, '_');
-             const toDisplay = resolved.split('/').pop();
-             
-             if (!addedNodes.has(toName)) {
-               mermaidGraph += `  ${toName}["📄 ${toDisplay}"]\n`;
-               addedNodes.add(toName);
-             }
-             
-             const edgeId = `${fromName}-${toName}`;
-             if (!edges.has(edgeId)) {
-               mermaidGraph += `  ${fromName} --> ${toName}\n`;
-               edges.add(edgeId);
-             }
+    if (!addedNodes.has(name)) {
+      if (!groups[dir]) groups[dir] = [];
+      groups[dir].push({ name, display });
+      addedNodes.add(name);
+    }
+    
+    for (const imp of imports) {
+      if (imp.startsWith(".")) {
+         const resolved = allPaths.find(p => p.includes(imp.replace(/^\.\//, "").replace(/\.\w+$/, "")));
+         if (resolved) {
+           const toName = resolved.split('/').pop().replace(/[^a-zA-Z0-9]/g, '_');
+           const toParts = resolved.split('/');
+           const toDir = toParts.length > 1 ? toParts[toParts.length - 2] : "root";
+           
+           if (!addedNodes.has(toName)) {
+             if (!groups[toDir]) groups[toDir] = [];
+             groups[toDir].push({ name: toName, display: resolved.split('/').pop() });
+             addedNodes.add(toName);
            }
-        }
+           
+           const edgeId = `${name}-${toName}`;
+           if (!edges.has(edgeId)) {
+             edges.set(edgeId, { from: name, to: toName });
+           }
+         }
       }
+    }
+  }
+
+  // Add subgraphs in a specific order for better hierarchy
+  const orderedDirs = ["routes", "controllers", "services", "models", "data", "config", "utils", "root"];
+  const existingDirs = Object.keys(groups).sort((a,b) => {
+    const ai = orderedDirs.indexOf(a.toLowerCase());
+    const bi = orderedDirs.indexOf(b.toLowerCase());
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  for (const dir of existingDirs) {
+    const nodes = groups[dir];
+    mermaidGraph += `  subgraph ${dir.toUpperCase()}\n`;
+    for (const node of nodes) {
+      mermaidGraph += `    ${node.name}["📄 ${node.display}"]\n`;
+    }
+    mermaidGraph += `  end\n`;
+  }
+
+  // Add edges
+  for (const edge of edges.values()) {
+    mermaidGraph += `  ${edge.from} --> ${edge.to}\n`;
+  }
+
+  // FORCE HIERARCHY: Add invisible edges between groups to force them into rows
+  for (let i = 0; i < existingDirs.length - 1; i++) {
+    const fromDir = existingDirs[i];
+    const toDir = existingDirs[i+1];
+    const fromNode = groups[fromDir][0]?.name;
+    const toNode = groups[toDir][0]?.name;
+    if (fromNode && toNode) {
+      mermaidGraph += `  ${fromNode} ~~~ ${toNode}\n`; // Invisible edge to force rank
     }
   }
   
   // Style the graph
   mermaidGraph += "  classDef default fill:#1f2937,stroke:#4b5563,stroke-width:1px,color:#f9fafb,rx:8,ry:8;\n";
   
-  if (mermaidGraph === "graph TD\n  classDef default fill:#1f2937,stroke:#4b5563,stroke-width:1px,color:#f9fafb,rx:8,ry:8;\n") {
+  if (mermaidGraph === "flowchart TD\n  classDef default fill:#1f2937,stroke:#4b5563,stroke-width:1px,color:#f9fafb,rx:8,ry:8;\n") {
     mermaidGraph = null;
+  }
+
+  // ── Generate React Flow Compatible Dependency Data ──
+  const reactFlowNodes = [];
+  const reactFlowEdges = [];
+  
+  for (const [dir, nodes] of Object.entries(groups)) {
+    for (const node of nodes) {
+      reactFlowNodes.push({
+        id: node.name,
+        label: node.display,
+        layer: dir.toLowerCase(),
+      });
+    }
+  }
+
+  for (const edge of edges.values()) {
+    reactFlowEdges.push([edge.from, edge.to]);
   }
 
   return {
@@ -373,7 +427,11 @@ function detectIssues(files) {
     readability,
     complexity: complexFiles,
     fileMetrics,
-    mermaidGraph
+    mermaidGraph,
+    dependencyData: {
+      nodes: reactFlowNodes,
+      edges: reactFlowEdges
+    }
   };
 }
 
