@@ -45,7 +45,17 @@ body {
   padding: 1.5rem 3rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid #1a1a1a;
+}
+
+@media (max-width: 768px) {
+  .landing-header {
+    padding: 1.5rem 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
 }
 
 .landing-logo {
@@ -56,6 +66,12 @@ body {
   font-size: 1.1rem;
   letter-spacing: -0.5px;
   color: #ededed;
+}
+
+@media (max-width: 768px) {
+  .landing-attribution {
+    order: 3;
+  }
 }
 
 .hero-section {
@@ -74,6 +90,18 @@ body {
   margin-bottom: 2rem;
 }
 
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 4rem 1.5rem 3rem;
+  }
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+}
+
 .hero-subtitle {
   font-size: 1.25rem;
   color: #a1a1aa;
@@ -90,6 +118,13 @@ body {
   margin: 0 auto;
   padding: 0 3rem 6rem;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .feature-grid {
+    flex-direction: column;
+    padding: 0 1.5rem 4rem;
+  }
 }
 
 .feature-card {
@@ -184,6 +219,12 @@ body {
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+}
+
 /* ─── SIDEBAR ─── */
 .sidebar {
   width: 360px;
@@ -194,6 +235,20 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: auto;
+    max-height: 50vh;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-body {
+    padding: 1rem;
+  }
 }
 
 .sidebar-head {
@@ -360,6 +415,20 @@ textarea.input-g { resize: vertical; min-height: 100px; line-height: 1.6; font-f
   scrollbar-width: none;
 }
 
+@media (max-width: 768px) {
+  .main-toolbar {
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+  }
+  .toolbar-title {
+    display: none;
+  }
+  .toolbar-tab {
+    padding: 4px 12px;
+    font-size: 0.75rem;
+  }
+}
+
 .main-toolbar::-webkit-scrollbar {
   display: none;
 }
@@ -412,6 +481,16 @@ textarea.input-g { resize: vertical; min-height: 100px; line-height: 1.6; font-f
   backdrop-filter: blur(8px);
 }
 
+@media (max-width: 768px) {
+  .lld-panel {
+    bottom: 0.5rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+    max-height: 40vh;
+  }
+}
+
 .lld-panel::-webkit-scrollbar { width: 4px; }
 .lld-panel::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
 
@@ -452,7 +531,14 @@ textarea.input-g { resize: vertical; min-height: 100px; line-height: 1.6; font-f
 .improve-content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: auto;
   padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .improve-content {
+    padding: 1rem;
+  }
 }
 
 .issue-card {
@@ -594,6 +680,7 @@ textarea.input-g { resize: vertical; min-height: 100px; line-height: 1.6; font-f
 
 /* ─── MERMAID STYLING ─── */
 .mermaid-container svg {
+  max-width: 100%;
   height: auto !important;
   display: block;
 }
@@ -624,4 +711,33 @@ textarea.input-g { resize: vertical; min-height: 100px; line-height: 1.6; font-f
 .editable-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .diagram-title {
+    font-size: 0.8rem !important;
+    top: 10px !important;
+    left: 10px !important;
+  }
+  .diagram-subtitle {
+    font-size: 0.6rem !important;
+    letter-spacing: 1px !important;
+  }
+  .toolbar-tab {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+  }
 }

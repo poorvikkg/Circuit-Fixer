@@ -39,10 +39,10 @@ export default function AuthPage({ onAuthenticated }) {
       {/* Background grid - made even more subtle */}
       <div style={styles.grid} />
 
-      <div style={styles.card}>
+      <div id="fixy-auth-card" style={styles.card}>
         {/* Brand - Minimalist */}
         <div style={styles.logoRow}>
-          <span style={styles.logoText}>CIRCUIT FIXER</span>
+          <span id="fixy-auth-logo" style={styles.logoText}>CIRCUIT FIXER</span>
         </div>
 
         <form onSubmit={handleSubmit} style={styles.form} autoComplete="on">
@@ -168,6 +168,10 @@ export default function AuthPage({ onAuthenticated }) {
         button:hover { filter: brightness(0.9); }
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+        @media (max-width: 480px) {
+          #fixy-auth-card { padding: 32px 24px !important; margin: 0 16px; }
+          #fixy-auth-logo { font-size: 20px !important; letter-spacing: 2px !important; }
+        }
       `}</style>
     </div>
   );

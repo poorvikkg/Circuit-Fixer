@@ -81,17 +81,26 @@ export default function BuildMode({ onBack }) {
     window.print();
   };
 
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(window.innerWidth < 768);
+
   const SL = ({ children, cls }) => <div className={`section-label ${cls || ""}`} style={{ marginTop: "1rem" }}>{children}</div>;
 
   return (
     <div className="app">
-      <div className="sidebar">
-        <div className="sidebar-head">
-          <button className="back-btn" onClick={onBack}>←</button>
-          <span className="sidebar-logo" style={{ letterSpacing: "2px", textTransform: "uppercase" }}>CIRCUIT FIXER</span>
-          <span className="sidebar-mode-badge build-badge">Build</span>
-        </div>
-        <div className="sidebar-body">
+      <div className="sidebar" style={{ 
+        width: isSidebarCollapsed ? "0px" : "360px", 
+        minWidth: isSidebarCollapsed ? "0px" : "360px",
+        transition: "all 0.3s ease",
+        overflow: "hidden",
+        borderRight: isSidebarCollapsed ? "none" : "1px solid var(--border)"
+      }}>
+        <div style={{ width: "360px", height: "100%", display: "flex", flexDirection: "column" }}>
+          <div className="sidebar-head">
+            <button className="back-btn" onClick={onBack}>←</button>
+            <span className="sidebar-logo" style={{ letterSpacing: "2px", textTransform: "uppercase" }}>CIRCUIT FIXER</span>
+            <span className="sidebar-mode-badge build-badge">Build</span>
+          </div>
+          <div className="sidebar-body">
           <SL cls="blue">Core Requirements</SL>
           <div className="form-group">
             <label className="form-label">Business Domain</label>
@@ -224,34 +233,49 @@ export default function BuildMode({ onBack }) {
               <option value="event-sourcing">Event Timeline (Kafka)</option>
             </select>
           </div>
-        </div>
-        <div className="sidebar-footer">
-          <button className="btn-primary" onClick={handleGenerate} disabled={loading}>
-            {loading ? "Generating Architecture..." : "Generate Architecture"}
-          </button>
+          </div>
+          <div className="sidebar-footer">
+            <button className="btn-primary" onClick={handleGenerate} disabled={loading}>
+              {loading ? "Generating Architecture..." : "Generate Architecture"}
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="main">
-        {result && (
-          <div className="main-toolbar">
-            <div className="toolbar-title">{form.appType} · {Number(form.users).toLocaleString()} DAU</div>
-            {["hld", "lld", "insights", "iac"].map(t => (
-              <button key={t} className={`toolbar-tab ${activeTab === t ? "active" : ""}`} onClick={() => setActiveTab(t)}>
-                {t === "hld" ? "System Diagram" : t === "lld" ? "Component Details" : t === "insights" ? "Scaling & Tradeoffs" : "Setup Scripts"}
+        <div className="main-toolbar">
+          <button 
+            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            style={{
+              background: "#18181b", border: "1px solid var(--border)", color: "#fff",
+              width: "32px", height: "32px", borderRadius: "6px", cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              marginRight: "0.5rem"
+            }}
+          >
+            {isSidebarCollapsed ? "→" : "←"}
+          </button>
+          
+          {result && (
+            <>
+              <div className="toolbar-title">{form.appType} · {Number(form.users).toLocaleString()} DAU</div>
+              {["hld", "lld", "insights", "iac"].map(t => (
+                <button key={t} className={`toolbar-tab ${activeTab === t ? "active" : ""}`} onClick={() => setActiveTab(t)}>
+                  {t === "hld" ? "System Diagram" : t === "lld" ? "Component Details" : t === "insights" ? "Scaling & Tradeoffs" : "Setup Scripts"}
+                </button>
+              ))}
+              <div style={{ flex: 1 }}></div>
+              <button id="export-pdf-btn" onClick={handleDownloadPdf} style={{
+                background: "transparent", border: "1px solid var(--border)", color: "var(--text)",
+                padding: "0.4rem 0.8rem", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 600,
+                cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem"
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span className="desktop-only">Export PDF</span>
               </button>
-            ))}
-            <div style={{ flex: 1 }}></div>
-            <button id="export-pdf-btn" onClick={handleDownloadPdf} style={{
-              background: "transparent", border: "1px solid var(--border)", color: "var(--text)",
-              padding: "0.4rem 0.8rem", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 600,
-              cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem"
-            }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              Export PDF
-            </button>
-          </div>
-        )}
+            </>
+          )}
+        </div>
 
         <div id="pdf-export-area" className="canvas-area">
           {activeTab === "hld" && (

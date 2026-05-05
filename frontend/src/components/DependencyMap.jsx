@@ -247,11 +247,11 @@ function DependencyContent({ dependencyData }) {
 
   return (
     <div style={{ width: "100%", height: "100%", background: "#070710", position: "relative" }}>
-      <div style={{
+      <div className="diagram-title" style={{
         position: "absolute", top: 24, left: 24, zIndex: 10,
         display: "flex", flexDirection: "column", gap: 6
       }}>
-        <div style={{ fontSize: "0.65rem", fontWeight: 900, color: "rgba(255,255,255,0.4)", letterSpacing: "3px", textTransform: "uppercase" }}>
+        <div className="diagram-subtitle" style={{ fontSize: "0.65rem", fontWeight: 900, color: "rgba(255,255,255,0.4)", letterSpacing: "3px", textTransform: "uppercase" }}>
           Module Architecture
         </div>
         <div style={{ fontSize: "1.2rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.5px" }}>

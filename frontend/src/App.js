@@ -46,13 +46,13 @@ export default function App() {
 
   // Landing
   return (
-    <div className="landing" style={{ height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
-      <header className="landing-header" style={{ position: "relative", justifyContent: "space-between" }}>
+    <div className="landing" style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <header className="landing-header">
         <div className="landing-logo" style={{ letterSpacing: "2px", textTransform: "uppercase", fontWeight: 800 }}>
           CIRCUIT FIXER
         </div>
         
-        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", fontSize: "0.75rem", color: "#a1a1aa", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "6px" }}>
+        <div className="landing-attribution" style={{ fontSize: "0.75rem", color: "#a1a1aa", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "6px" }}>
           <span style={{ width: 8, height: 8, background: "#ffffff", borderRadius: "50%", boxShadow: "0 0 8px rgba(255,255,255,0.4)" }}></span>
           Made by Poorvik
         </div>
@@ -77,7 +77,7 @@ export default function App() {
         </div>
       </header>
 
-      <div className="hero-section" style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0 2rem", width: "100%", margin: "0 auto" }}>
+      <div className="hero-section" style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "2rem", width: "100%", margin: "0 auto" }}>
         <h1 className="hero-title">What are we building today?</h1>
       </div>
 
