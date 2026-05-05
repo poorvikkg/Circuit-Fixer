@@ -48,7 +48,7 @@ const MermaidChart = ({ chart }) => {
   );
 };
 
-const SEV_COLOR = { critical:"#ffffff", high:"#a1a1aa", medium:"#71717a", info:"#3f3f46" };
+const SEV_COLOR = { critical:"#ef4444", high:"#f59e0b", medium:"#3b82f6", info:"#10b981" };
 
 export default function ImproveMode({ onBack }) {
   const [section, setSection] = useState("hld"); // "hld" or "lld"
