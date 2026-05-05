@@ -4,7 +4,8 @@ import ImproveMode from "./components/ImproveMode";
 import AuthPage    from "./components/AuthPage";
 import "./index.css";
 
-const API = "http://localhost:5000/api/auth";
+const API_BASE = window.location.hostname === "localhost" ? "http://localhost:5000" : "";
+const API = `${API_BASE}/api/auth`;
 
 export default function App() {
   const [mode, setMode] = useState(null);         // null | "build" | "improve"

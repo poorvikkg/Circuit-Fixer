@@ -8,7 +8,7 @@ const app = express();
 app.set("trust proxy", 1);
 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
   credentials: true,
 }));
 app.use(express.json());
@@ -34,6 +34,13 @@ const authRoutes   = require("./routes/authRoutes");
 app.use("/api", systemRoutes);
 app.use("/api/auth", authRoutes);
 
-app.listen(5000, () => {
-  console.log("Fixy server running on port 5000");
-});
+// Export for Vercel
+module.exports = app;
+
+// Only listen if not on Vercel
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Fixy server running on port ${PORT}`);
+  });
+}

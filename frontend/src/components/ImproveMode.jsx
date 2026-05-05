@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ArchitectureDiagram from "./ArchitectureDiagram";
 import DependencyMap from "./DependencyMap";
 
+const API_BASE = window.location.hostname === "localhost" ? "http://localhost:5000" : "";
 const SEV_COLOR = { critical:"#ef4444", high:"#f59e0b", medium:"#3b82f6", info:"#10b981" };
 
 export default function ImproveMode({ onBack }) {
@@ -57,7 +58,7 @@ export default function ImproveMode({ onBack }) {
     fd.append("techStack", hldForm.techStack);
     fd.append("existingHLD", hldForm.existingHLD);
     try {
-      const res = await fetch("http://localhost:5000/api/hld-analyze", {
+      const res = await fetch(`${API_BASE}/api/hld-analyze`, {
         method: "POST",
         credentials: "include",
         body: fd
@@ -81,7 +82,7 @@ export default function ImproveMode({ onBack }) {
     if (hldForm.existingHLD.length < 10) return;
     setLoading(true); setHldResult(null); setHldErrorMessage("");
     try {
-      const res = await fetch("http://localhost:5000/api/improve", {
+      const res = await fetch(`${API_BASE}/api/improve`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -106,7 +107,7 @@ export default function ImproveMode({ onBack }) {
     if (!repoUrl) return;
     setLoading(true); setCodeResult(null); setErrorMessage("");
     try {
-      const res = await fetch("http://localhost:5000/api/code-review", {
+      const res = await fetch(`${API_BASE}/api/code-review`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
