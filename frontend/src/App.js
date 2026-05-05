@@ -27,8 +27,8 @@ export default function App() {
   // Loading state
   if (user === undefined) {
     return (
-      <div style={{ minHeight: "100vh", background: "#070710", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ width: 28, height: 28, border: "2px solid #3f3f46", borderTopColor: "#a78bfa", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
+      <div style={{ minHeight: "100vh", background: "#09090b", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: 28, height: 28, border: "2px solid #27272a", borderTopColor: "#ffffff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
@@ -47,15 +47,12 @@ export default function App() {
   return (
     <div className="landing" style={{ height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
       <header className="landing-header" style={{ position: "relative", justifyContent: "space-between" }}>
-        <div className="landing-logo">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-          </svg>
-          Fixy
+        <div className="landing-logo" style={{ letterSpacing: "2px", textTransform: "uppercase", fontWeight: 800 }}>
+          CIRCUIT FIXER
         </div>
         
         <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", fontSize: "0.75rem", color: "#a1a1aa", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "6px" }}>
-          <span style={{ width: 8, height: 8, background: "#8b5cf6", borderRadius: "50%", boxShadow: "0 0 8px #8b5cf6" }}></span>
+          <span style={{ width: 8, height: 8, background: "#ffffff", borderRadius: "50%", boxShadow: "0 0 8px rgba(255,255,255,0.4)" }}></span>
           Made by Poorvik
         </div>
 
@@ -86,37 +83,13 @@ export default function App() {
       <div className="feature-grid" style={{ paddingBottom: "3rem", paddingTop: "0" }}>
         <div className="feature-card" onClick={() => setMode("build")} style={{ justifyContent: "center", alignItems: "center", textAlign: "center", gap: "1rem", padding: "3rem" }}>
           <div className="feature-card-header" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem", margin: 0 }}>
-            <div className="feature-card-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                <line x1="3" y1="9" x2="21" y2="9" />
-                <line x1="9" y1="21" x2="9" y2="9" />
-              </svg>
-            </div>
             <h2 style={{ fontSize: "1.5rem" }}>Start fresh</h2>
-          </div>
-          <div className="feature-card-footer" style={{ marginTop: 0, justifyContent: "center", opacity: 0.6 }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
           </div>
         </div>
 
         <div className="feature-card" onClick={() => setMode("improve")} style={{ justifyContent: "center", alignItems: "center", textAlign: "center", gap: "1rem", padding: "3rem" }}>
           <div className="feature-card-header" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem", margin: 0 }}>
-            <div className="feature-card-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-              </svg>
-            </div>
             <h2 style={{ fontSize: "1.5rem" }}>Check my setup</h2>
-          </div>
-          <div className="feature-card-footer" style={{ marginTop: 0, justifyContent: "center", opacity: 0.6 }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
           </div>
         </div>
       </div>

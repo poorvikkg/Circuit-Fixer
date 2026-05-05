@@ -86,7 +86,7 @@ export default function BuildMode({ onBack }) {
       <div className="sidebar">
         <div className="sidebar-head">
           <button className="back-btn" onClick={onBack}>←</button>
-          <span className="sidebar-logo">FIXY</span>
+          <span className="sidebar-logo" style={{ letterSpacing: "2px", textTransform: "uppercase" }}>CIRCUIT FIXER</span>
           <span className="sidebar-mode-badge build-badge">Build</span>
         </div>
         <div className="sidebar-body">

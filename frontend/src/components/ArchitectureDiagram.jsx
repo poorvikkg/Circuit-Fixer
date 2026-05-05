@@ -15,12 +15,12 @@ const START_X    = 150;
 const START_Y    = 150;   
 
 const SWIM_LANES = [
-  { id: "client",   label: "CLIENT",             color: "#3b82f6" },
-  { id: "edge",     label: "EDGE / CDN",         color: "#8b5cf6" },
-  { id: "traffic",  label: "GATEWAY",            color: "#f97316" },
-  { id: "service",  label: "MICROSERVICES",       color: "#10b981" },
-  { id: "async",    label: "ASYNC / EVENTS",      color: "#f59e0b" },
-  { id: "data",     label: "DATA LAYER",          color: "#60a5fa" },
+  { id: "client",   label: "CLIENT",             color: "#ffffff" },
+  { id: "edge",     label: "EDGE / CDN",         color: "#a1a1aa" },
+  { id: "traffic",  label: "GATEWAY",            color: "#71717a" },
+  { id: "service",  label: "MICROSERVICES",       color: "#ffffff" },
+  { id: "async",    label: "ASYNC / EVENTS",      color: "#a1a1aa" },
+  { id: "data",     label: "DATA LAYER",          color: "#71717a" },
 ];
 
 const TIER_ROW = {
@@ -28,15 +28,15 @@ const TIER_ROW = {
 };
 
 const LAYER_STYLE = {
-  client:   { border: "#3b82f6", glow: "#3b82f6", icon: "🖥️",  badge: "CLIENT"   },
-  edge:     { border: "#8b5cf6", glow: "#8b5cf6", icon: "🌐",  badge: "EDGE"     },
-  traffic:  { border: "#f97316", glow: "#f97316", icon: "⚖️",  badge: "GATEWAY"  },
-  service:  { border: "#10b981", glow: "#10b981", icon: "⚙️",  badge: "SERVICE"  },
-  data:     { border: "#60a5fa", glow: "#60a5fa", icon: "🗄️",  badge: "DATA"     },
-  cache:    { border: "#ef4444", glow: "#ef4444", icon: "⚡",  badge: "CACHE"    },
-  async:    { border: "#f59e0b", glow: "#f59e0b", icon: "📡",  badge: "ASYNC"    },
-  security: { border: "#f87171", glow: "#f87171", icon: "🛡️",  badge: "SECURITY" },
-  infra:    { border: "#a78bfa", glow: "#a78bfa", icon: "🔧",  badge: "INFRA"    },
+  client:   { border: "#ffffff", glow: "#ffffff", icon: "🖥️",  badge: "CLIENT"   },
+  edge:     { border: "#a1a1aa", glow: "#a1a1aa", icon: "🌐",  badge: "EDGE"     },
+  traffic:  { border: "#71717a", glow: "#71717a", icon: "⚖️",  badge: "GATEWAY"  },
+  service:  { border: "#ffffff", glow: "#ffffff", icon: "⚙️",  badge: "SERVICE"  },
+  data:     { border: "#a1a1aa", glow: "#a1a1aa", icon: "🗄️",  badge: "DATA"     },
+  cache:    { border: "#71717a", glow: "#71717a", icon: "⚡",  badge: "CACHE"    },
+  async:    { border: "#ffffff", glow: "#ffffff", icon: "📡",  badge: "ASYNC"    },
+  security: { border: "#a1a1aa", glow: "#a1a1aa", icon: "🛡️",  badge: "SECURITY" },
+  infra:    { border: "#71717a", glow: "#71717a", icon: "🔧",  badge: "INFRA"    },
 };
 
 const NODE_ICONS = {

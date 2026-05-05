@@ -1,19 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-  --bg: #0d0d0f;
-  --bg-card: #16161a;
+  --bg: #09090b;
+  --bg-card: #18181b;
   --bg-panel: #121214;
-  --accent: #6366f1;
-  --accent2: #8b5cf6;
-  --green: #10b981;
-  --orange: #f59e0b;
-  --red: #ef4444;
-  --text: #f8fafc;
-  --muted: #9ca3af;
+  --accent: #ffffff;
+  --accent2: #71717a;
+  --green: #ffffff;
+  --orange: #a1a1aa;
+  --red: #ffffff;
+  --text: #f4f4f5;
+  --muted: #71717a;
   --border: #27272a;
-  --glow: rgba(99, 102, 241, 0.15);
-  --radius: 16px;
+  --glow: transparent;
+  --radius: 12px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +30,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #070710 70%);
+  background: #09090b;
   color: #ededed;
   font-family: 'Outfit', sans-serif;
   position: relative;
@@ -38,15 +38,7 @@ body {
 }
 
 .landing::before {
-  content: '';
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
-  top: -200px;
-  right: -100px;
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 
 .landing-header {
@@ -78,11 +70,8 @@ body {
   font-weight: 800;
   letter-spacing: -0.05em;
   line-height: 1.1;
-  background: linear-gradient(to bottom, #ffffff 0%, #9ca3af 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ffffff;
   margin-bottom: 2rem;
-  filter: drop-shadow(0 0 30px rgba(255,255,255,0.1));
 }
 
 .hero-subtitle {
@@ -232,8 +221,8 @@ body {
 
 .sidebar-logo { font-size: 1.3rem; font-weight: 800; color: #ededed; }
 .sidebar-mode-badge { font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
-.build-badge { background: rgba(59,130,246,0.1); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
-.improve-badge { background: rgba(139,92,246,0.1); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+.build-badge { background: rgba(255,255,255,0.08); color: #ffffff; border: 1px solid rgba(255,255,255,0.2); }
+.improve-badge { background: rgba(255,255,255,0.08); color: #ffffff; border: 1px solid rgba(255,255,255,0.2); }
 
 .sidebar-body {
   flex: 1;
@@ -280,19 +269,26 @@ body {
 }
 
 .input-g {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  background: #09090b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
   padding: 12px 14px;
-  color: var(--text);
-  font-family: 'Outfit', sans-serif;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   outline: none;
   transition: all 0.2s;
   width: 100%;
 }
 
-.input-g:focus { background: rgba(255,255,255,0.06); border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
+.input-g:focus { background: #09090b; border-color: #ffffff; }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 40px #09090b inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
 .input-g option { background: var(--bg-card); }
 
 textarea.input-g { resize: vertical; min-height: 100px; line-height: 1.6; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
@@ -307,8 +303,8 @@ textarea.input-g { resize: vertical; min-height: 100px; line-height: 1.6; font-f
   border-radius: 8px; padding: 7px 10px; cursor: pointer;
   font-size: 0.82rem; color: var(--muted); transition: all 0.2s;
 }
-.feat-chip.active { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.4); color: #60a5fa; }
-.feat-chip.active .feat-dot { background: #3b82f6; }
+.feat-chip.active { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); color: #ffffff; }
+.feat-chip.active .feat-dot { background: #ffffff; }
 .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: #3f3f46; transition: background 0.2s; }
 
 .btn-primary {

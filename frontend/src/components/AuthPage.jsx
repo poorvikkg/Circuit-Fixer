@@ -35,30 +35,14 @@ export default function AuthPage({ onAuthenticated }) {
 
   return (
     <div style={styles.root}>
-      {/* Background grid */}
+      {/* Background grid - made even more subtle */}
       <div style={styles.grid} />
 
-      {/* Glow orb */}
-      <div style={styles.orb} />
-
       <div style={styles.card}>
-        {/* Logo */}
+        {/* Brand - Minimalist */}
         <div style={styles.logoRow}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-            stroke="#a78bfa" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-          </svg>
-          <span style={styles.logoText}>Fixy</span>
+          <span style={styles.logoText}>CIRCUIT FIXER</span>
         </div>
-
-        <h1 style={styles.heading}>
-          {mode === "login" ? "Welcome back" : "Create account"}
-        </h1>
-        <p style={styles.subheading}>
-          {mode === "login"
-            ? "Sign in to your workspace"
-            : "Start building production architectures"}
-        </p>
 
         <form onSubmit={handleSubmit} style={styles.form} autoComplete="on">
           {/* Email */}
@@ -124,10 +108,10 @@ export default function AuthPage({ onAuthenticated }) {
             </div>
           </div>
 
-          {/* Error message */}
+          {/* Error message - more subtle/professional */}
           {error && (
             <div style={styles.errorBox}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2" strokeLinecap="round">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fca5a5" strokeWidth="2" strokeLinecap="round">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="15" y1="9" x2="9" y2="15"/>
                 <line x1="9" y1="9" x2="15" y2="15"/>
@@ -136,7 +120,7 @@ export default function AuthPage({ onAuthenticated }) {
             </div>
           )}
 
-          {/* Submit */}
+          {/* Submit - Pure White for Premium Look */}
           <button
             id="fixy-auth-submit"
             type="submit"
@@ -153,7 +137,7 @@ export default function AuthPage({ onAuthenticated }) {
               <>
                 {mode === "login" ? "Sign in" : "Create account"}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                   <line x1="5" y1="12" x2="19" y2="12"/>
                   <polyline points="12 5 19 12 12 19"/>
                 </svg>
@@ -173,23 +157,16 @@ export default function AuthPage({ onAuthenticated }) {
           </button>
         </p>
 
-        {/* Session note */}
-        <div style={styles.sessionNote}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#52525b" strokeWidth="2" strokeLinecap="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          </svg>
-          Session persists for 7 days
-        </div>
       </div>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px #0d0d14 inset !important; -webkit-text-fill-color: #e4e4e7 !important; }
-        input:focus { outline: none; }
+        input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px #09090b inset !important; -webkit-text-fill-color: #f4f4f5 !important; }
+        input:focus { outline: none; border-color: #f4f4f5 !important; }
+        button:hover { filter: brightness(0.9); }
         @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
       `}</style>
     </div>
   );
@@ -198,7 +175,7 @@ export default function AuthPage({ onAuthenticated }) {
 const styles = {
   root: {
     minHeight: "100vh",
-    background: "#070710",
+    background: "#09090b", // Pure dark zinc
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -209,73 +186,62 @@ const styles = {
   grid: {
     position: "absolute",
     inset: 0,
-    backgroundImage: "radial-gradient(circle, #ffffff08 1px, transparent 1px)",
-    backgroundSize: "32px 32px",
+    backgroundImage: "radial-gradient(circle, #ffffff05 1px, transparent 1px)", // Very faint grid
+    backgroundSize: "40px 40px",
     pointerEvents: "none",
-  },
-  orb: {
-    position: "absolute",
-    top: "15%",
-    left: "50%",
-    transform: "translateX(-50%)",
-    width: 600,
-    height: 300,
-    background: "radial-gradient(ellipse, #7c3aed18 0%, transparent 70%)",
-    pointerEvents: "none",
-    filter: "blur(40px)",
   },
   card: {
     position: "relative",
     zIndex: 1,
     width: "100%",
-    maxWidth: 420,
-    background: "rgba(13,13,20,0.92)",
+    maxWidth: 400,
+    background: "#121214",
     border: "1px solid #27272a",
-    borderRadius: 20,
-    padding: "40px 36px",
-    backdropFilter: "blur(20px)",
-    boxShadow: "0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)",
-    animation: "fadeUp 0.4s ease",
+    borderRadius: 12,
+    padding: "48px 40px",
+    boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
+    animation: "fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
   },
   logoRow: {
     display: "flex",
     alignItems: "center",
-    gap: 8,
-    marginBottom: 28,
+    justifyContent: "center",
+    marginBottom: 48,
   },
   logoText: {
-    fontSize: 18,
-    fontWeight: 700,
-    color: "#f4f4f5",
-    letterSpacing: "-0.3px",
+    fontSize: 24,
+    fontWeight: 800,
+    color: "#ffffff",
+    letterSpacing: "4px",
+    textTransform: "uppercase",
   },
   heading: {
-    fontSize: 26,
-    fontWeight: 700,
-    color: "#f4f4f5",
+    fontSize: 24,
+    fontWeight: 600,
+    color: "#ffffff",
     letterSpacing: "-0.5px",
-    marginBottom: 6,
+    marginBottom: 8,
   },
   subheading: {
-    fontSize: 13,
-    color: "#71717a",
-    marginBottom: 32,
+    fontSize: 14,
+    color: "#a1a1aa",
+    marginBottom: 36,
   },
   form: {
     display: "flex",
     flexDirection: "column",
-    gap: 20,
+    gap: 24,
   },
   fieldGroup: {
     display: "flex",
     flexDirection: "column",
-    gap: 7,
+    gap: 8,
   },
   label: {
     fontSize: 12,
-    fontWeight: 600,
-    color: "#a1a1aa",
-    letterSpacing: "0.3px",
+    fontWeight: 500,
+    color: "#71717a",
+    letterSpacing: "0.5px",
     textTransform: "uppercase",
   },
   inputWrap: {
@@ -283,21 +249,21 @@ const styles = {
   },
   inputIcon: {
     position: "absolute",
-    left: 13,
+    left: 14,
     top: "50%",
     transform: "translateY(-50%)",
     pointerEvents: "none",
   },
   input: {
     width: "100%",
-    background: "#0a0a12",
-    border: "1px solid #3f3f46",
-    borderRadius: 10,
-    padding: "11px 14px 11px 40px",
+    background: "#09090b",
+    border: "1px solid #27272a",
+    borderRadius: 8,
+    padding: "12px 14px 12px 42px",
     fontSize: 14,
-    color: "#e4e4e7",
+    color: "#ffffff",
     fontFamily: "'Inter', sans-serif",
-    transition: "border-color 0.15s",
+    transition: "all 0.2s ease",
     display: "block",
   },
   eyeBtn: {
@@ -315,13 +281,13 @@ const styles = {
   errorBox: {
     display: "flex",
     alignItems: "center",
-    gap: 7,
-    background: "rgba(239,68,68,0.08)",
-    border: "1px solid rgba(239,68,68,0.25)",
-    borderRadius: 8,
-    padding: "10px 14px",
+    gap: 8,
+    background: "rgba(127,29,29,0.2)",
+    border: "1px solid rgba(248,113,113,0.2)",
+    borderRadius: 6,
+    padding: "12px",
     fontSize: 13,
-    color: "#f87171",
+    color: "#fca5a5",
     marginTop: -4,
   },
   submitBtn: {
@@ -329,55 +295,55 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    marginTop: 4,
-    padding: "13px 24px",
-    background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+    marginTop: 8,
+    padding: "14px 24px",
+    background: "#ffffff", // Pure white
     border: "none",
-    borderRadius: 10,
+    borderRadius: 8,
     fontSize: 14,
     fontWeight: 600,
-    color: "#fff",
+    color: "#000000", // Black text on white
     fontFamily: "'Inter', sans-serif",
-    letterSpacing: "0.1px",
-    transition: "all 0.15s ease",
-    boxShadow: "0 4px 16px rgba(124,58,237,0.35), 0 0 0 1px rgba(255,255,255,0.05)",
+    transition: "all 0.2s ease",
     width: "100%",
   },
   spinner: {
-    width: 16,
-    height: 16,
-    border: "2px solid rgba(255,255,255,0.3)",
-    borderTopColor: "#fff",
+    width: 18,
+    height: 18,
+    border: "2px solid rgba(0,0,0,0.1)",
+    borderTopColor: "#000",
     borderRadius: "50%",
     display: "inline-block",
     animation: "spin 0.7s linear infinite",
   },
   toggleText: {
-    marginTop: 24,
+    marginTop: 28,
     textAlign: "center",
-    fontSize: 13,
+    fontSize: 14,
     color: "#71717a",
   },
   toggleBtn: {
     background: "none",
     border: "none",
-    color: "#a78bfa",
+    color: "#ffffff",
     fontWeight: 600,
-    fontSize: 13,
+    fontSize: 14,
     cursor: "pointer",
     fontFamily: "'Inter', sans-serif",
+    marginLeft: 4,
     textDecoration: "underline",
-    textDecorationColor: "transparent",
-    transition: "color 0.15s",
+    textDecorationThickness: "1px",
+    textUnderlineOffset: "4px",
   },
   sessionNote: {
-    marginTop: 16,
+    marginTop: 20,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: 5,
+    gap: 6,
     fontSize: 11,
-    color: "#52525b",
-    fontFamily: "monospace",
+    color: "#3f3f46",
+    textTransform: "uppercase",
+    letterSpacing: "1px",
   },
 };

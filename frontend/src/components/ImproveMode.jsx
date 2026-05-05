@@ -48,7 +48,7 @@ const MermaidChart = ({ chart }) => {
   );
 };
 
-const SEV_COLOR = { critical:"#ef4444", high:"#f59e0b", medium:"#3b82f6", info:"#10b981" };
+const SEV_COLOR = { critical:"#ffffff", high:"#a1a1aa", medium:"#71717a", info:"#3f3f46" };
 
 export default function ImproveMode({ onBack }) {
   const [section, setSection] = useState("hld"); // "hld" or "lld"
@@ -182,22 +182,24 @@ export default function ImproveMode({ onBack }) {
           <div className="sidebar-head" style={{ flexDirection: "column", alignItems: "stretch" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", width: "100%" }}>
               <button className="back-btn" onClick={onBack}>←</button>
-              <span className="sidebar-logo">FIXY</span>
+              <span className="sidebar-logo" style={{ letterSpacing: "2px", textTransform: "uppercase" }}>CIRCUIT FIXER</span>
               <span className="sidebar-mode-badge improve-badge" style={{ marginLeft: "auto" }}>Audit</span>
             </div>
             
             <div style={{display:"flex", gap:"1rem", marginTop:"1.5rem"}}>
               <button onClick={()=>setSection("hld")} style={{
-                flex:1, padding:"0.75rem", borderRadius:4, border: section==="hld" ? "1px solid #fff" : "1px solid rgba(255,255,255,0.2)",
+                flex:1, padding:"0.75rem", borderRadius:4, border: section==="hld" ? "1px solid #fff" : "1px solid #27272a",
                 background: section==="hld" ? "#fff" : "transparent",
-                color: section==="hld" ? "#000" : "#fff",
-                fontWeight:800, fontSize:"0.7rem", textTransform:"uppercase", letterSpacing:"1px", cursor:"pointer"
+                color: section==="hld" ? "#000" : "#a1a1aa",
+                fontWeight:800, fontSize:"0.7rem", textTransform:"uppercase", letterSpacing:"1px", cursor:"pointer",
+                transition: "all 0.2s ease"
               }}>System Audit</button>
               <button onClick={()=>setSection("lld")} style={{
-                flex:1, padding:"0.75rem", borderRadius:4, border: section==="lld" ? "1px solid #fff" : "1px solid rgba(255,255,255,0.2)",
+                flex:1, padding:"0.75rem", borderRadius:4, border: section==="lld" ? "1px solid #fff" : "1px solid #27272a",
                 background: section==="lld" ? "#fff" : "transparent",
-                color: section==="lld" ? "#000" : "#fff",
-                fontWeight:800, fontSize:"0.7rem", textTransform:"uppercase", letterSpacing:"1px", cursor:"pointer"
+                color: section==="lld" ? "#000" : "#a1a1aa",
+                fontWeight:800, fontSize:"0.7rem", textTransform:"uppercase", letterSpacing:"1px", cursor:"pointer",
+                transition: "all 0.2s ease"
               }}>Code Review</button>
             </div>
           </div>
@@ -341,13 +343,11 @@ export default function ImproveMode({ onBack }) {
           {/* Empty states */}
           {!hldResult && section==="hld" && (
             <div className="empty-state">
-              <div className="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></div>
               <div className="empty-title">Describe Your System</div>
             </div>
           )}
           {!codeResult && section==="lld" && (
             <div className="empty-state">
-              <div className="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
               <div className="empty-title">Check Your Code</div>
             </div>
           )}
