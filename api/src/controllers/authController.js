@@ -6,6 +6,21 @@ const bcrypt = require("bcryptjs");
 // In-memory user store (replace with DB for production)
 const users = {};
 
+// ── Pre-seed demo / recruiter account ──────────────────────────────────────
+// This runs once at startup so the demo credentials always work,
+// even after a server restart (since the store is in-memory).
+(async () => {
+  const DEMO_EMAIL    = "demo@circuitfixer.com";
+  const DEMO_PASSWORD = "Demo@1234";
+  const hashed = await bcrypt.hash(DEMO_PASSWORD, 12);
+  users[DEMO_EMAIL] = {
+    email: DEMO_EMAIL,
+    password: hashed,
+    createdAt: new Date().toISOString(),
+  };
+  console.log(`[Auth] Demo user seeded → ${DEMO_EMAIL}`);
+})();
+
 // POST /api/auth/register
 async function register(req, res) {
   try {

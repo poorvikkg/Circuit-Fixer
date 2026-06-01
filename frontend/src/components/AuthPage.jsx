@@ -3,6 +3,9 @@ import React, { useState } from "react";
 const API_BASE = process.env.REACT_APP_API_URL || (window.location.hostname === "localhost" ? "http://localhost:5000" : "");
 const API = `${API_BASE}/api/auth`;
 
+const DEMO_EMAIL = "demo@circuitfixer.com";
+const DEMO_PASSWORD = "Demo@1234";
+
 export default function AuthPage({ onAuthenticated }) {
   const [mode, setMode] = useState("login"); // "login" | "register"
   const [email, setEmail] = useState("");
@@ -10,6 +13,8 @@ export default function AuthPage({ onAuthenticated }) {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const fillDemo = () => { setEmail(DEMO_EMAIL); setPassword(DEMO_PASSWORD); setError(""); };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -44,6 +49,36 @@ export default function AuthPage({ onAuthenticated }) {
         <div style={styles.logoRow}>
           <span id="fixy-auth-logo" style={styles.logoText}>CIRCUIT FIXER</span>
         </div>
+
+        {/* ── Recruiter Demo Banner (login mode only) ── */}
+        {mode === "login" && (
+          <div style={styles.demoBanner}>
+            <div style={styles.demoBannerHeader}>
+              <span style={{ fontSize: "1rem" }}>🔑</span>
+              <span style={styles.demoBannerTitle}>Recruiter Demo Access</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={styles.demoLabel}>📧 Email:</span>
+                <code style={styles.demoCode}>{DEMO_EMAIL}</code>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={styles.demoLabel}>🔒 Password:</span>
+                <code style={styles.demoCode}>{DEMO_PASSWORD}</code>
+              </div>
+            </div>
+            <button
+              id="fixy-demo-autofill"
+              type="button"
+              onClick={fillDemo}
+              style={styles.demoBtn}
+              onMouseOver={e => e.currentTarget.style.background = "#16a34a"}
+              onMouseOut={e => e.currentTarget.style.background = "#15803d"}
+            >
+              ⚡ Click to Auto-Fill Credentials
+            </button>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} style={styles.form} autoComplete="on">
           {/* Email */}
@@ -350,5 +385,55 @@ const styles = {
     color: "#3f3f46",
     textTransform: "uppercase",
     letterSpacing: "1px",
+  },
+  demoBanner: {
+    background: "rgba(20, 83, 45, 0.25)",
+    border: "1px dashed #16a34a",
+    borderRadius: 10,
+    padding: "14px 16px",
+    marginBottom: 24,
+  },
+  demoBannerHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 10,
+  },
+  demoBannerTitle: {
+    fontWeight: 700,
+    fontSize: "0.8rem",
+    color: "#4ade80",
+    letterSpacing: "0.08em",
+    textTransform: "uppercase",
+  },
+  demoLabel: {
+    fontSize: "0.78rem",
+    color: "#86efac",
+    fontWeight: 600,
+    minWidth: 80,
+    fontFamily: "'Inter', sans-serif",
+  },
+  demoCode: {
+    background: "rgba(20, 83, 45, 0.4)",
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontSize: "0.85rem",
+    color: "#bbf7d0",
+    fontWeight: 700,
+    letterSpacing: "0.02em",
+  },
+  demoBtn: {
+    width: "100%",
+    background: "#15803d",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: 6,
+    padding: "9px 16px",
+    fontWeight: 700,
+    fontSize: "0.82rem",
+    cursor: "pointer",
+    letterSpacing: "0.04em",
+    transition: "background 0.2s",
+    fontFamily: "'Inter', sans-serif",
   },
 };
