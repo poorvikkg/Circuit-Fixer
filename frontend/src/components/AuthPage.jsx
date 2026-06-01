@@ -53,29 +53,24 @@ export default function AuthPage({ onAuthenticated }) {
         {/* ── Recruiter Demo Banner (login mode only) ── */}
         {mode === "login" && (
           <div style={styles.demoBanner}>
-            <div style={styles.demoBannerHeader}>
-              <span style={{ fontSize: "1rem" }}>🔑</span>
-              <span style={styles.demoBannerTitle}>Recruiter Demo Access</span>
+            <p style={styles.demoBannerTitle}>Demo Access</p>
+            <div style={styles.demoCredRow}>
+              <span style={styles.demoLabel}>Email</span>
+              <code style={styles.demoCode}>{DEMO_EMAIL}</code>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={styles.demoLabel}>📧 Email:</span>
-                <code style={styles.demoCode}>{DEMO_EMAIL}</code>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={styles.demoLabel}>🔒 Password:</span>
-                <code style={styles.demoCode}>{DEMO_PASSWORD}</code>
-              </div>
+            <div style={styles.demoCredRow}>
+              <span style={styles.demoLabel}>Password</span>
+              <code style={styles.demoCode}>{DEMO_PASSWORD}</code>
             </div>
             <button
               id="fixy-demo-autofill"
               type="button"
               onClick={fillDemo}
               style={styles.demoBtn}
-              onMouseOver={e => e.currentTarget.style.background = "#16a34a"}
-              onMouseOut={e => e.currentTarget.style.background = "#15803d"}
+              onMouseOver={e => e.currentTarget.style.opacity = "0.85"}
+              onMouseOut={e => e.currentTarget.style.opacity = "1"}
             >
-              ⚡ Click to Auto-Fill Credentials
+              Use Demo Credentials
             </button>
           </div>
         )}
@@ -387,53 +382,61 @@ const styles = {
     letterSpacing: "1px",
   },
   demoBanner: {
-    background: "rgba(20, 83, 45, 0.25)",
-    border: "1px dashed #16a34a",
-    borderRadius: 10,
-    padding: "14px 16px",
+    background: "#09090b",
+    border: "1px solid #27272a",
+    borderRadius: 8,
+    padding: "16px",
     marginBottom: 24,
-  },
-  demoBannerHeader: {
     display: "flex",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 10,
+    flexDirection: "column",
+    gap: 10,
   },
   demoBannerTitle: {
-    fontWeight: 700,
-    fontSize: "0.8rem",
-    color: "#4ade80",
-    letterSpacing: "0.08em",
+    margin: 0,
+    fontSize: 11,
+    fontWeight: 500,
+    color: "#71717a",
+    letterSpacing: "0.06em",
     textTransform: "uppercase",
   },
+  demoCredRow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 8,
+  },
   demoLabel: {
-    fontSize: "0.78rem",
-    color: "#86efac",
-    fontWeight: 600,
-    minWidth: 80,
+    fontSize: 12,
+    fontWeight: 500,
+    color: "#52525b",
     fontFamily: "'Inter', sans-serif",
+    textTransform: "uppercase",
+    letterSpacing: "0.04em",
   },
   demoCode: {
-    background: "rgba(20, 83, 45, 0.4)",
-    padding: "2px 8px",
+    background: "#18181b",
+    border: "1px solid #3f3f46",
+    padding: "3px 10px",
     borderRadius: 4,
-    fontSize: "0.85rem",
-    color: "#bbf7d0",
-    fontWeight: 700,
+    fontSize: 13,
+    color: "#e4e4e7",
+    fontFamily: "'Courier New', monospace",
+    fontWeight: 500,
     letterSpacing: "0.02em",
   },
   demoBtn: {
     width: "100%",
-    background: "#15803d",
-    color: "#ffffff",
+    marginTop: 2,
+    background: "#ffffff",
+    color: "#000000",
     border: "none",
     borderRadius: 6,
-    padding: "9px 16px",
-    fontWeight: 700,
-    fontSize: "0.82rem",
+    padding: "10px 16px",
+    fontWeight: 600,
+    fontSize: 13,
     cursor: "pointer",
-    letterSpacing: "0.04em",
-    transition: "background 0.2s",
+    letterSpacing: "0.02em",
+    transition: "opacity 0.15s ease",
     fontFamily: "'Inter', sans-serif",
   },
 };
